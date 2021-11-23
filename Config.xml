@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Yale ArchivesSpace Integration</Name>
+  <Author>Hudson Molonglo</Author>
+  <Version>1.0</Version>
+  <Active>True</Active>
+  <Type>Addon</Type>
+  <Description>Place requests for ArchivesSpace records</Description>
+  <Forms>
+    <Form>FormSplash</Form>
+    <Form>FormRequest</Form>
+  </Forms>
+  <Permissions />
+  <Settings>
+    <Setting name="APIUrl" value="http://localhost/" type="string">
+      <Description>The base URL for the custom AS echo webservice</Description>
+    </Setting>
+    <Setting name="APIUsername" value="admin" type="string">
+      <Description>The username used to access the AS api</Description>
+    </Setting>
+    <Setting name="APIPassword" value="admin" type="string">
+      <Description>The password used to access the AS api</Description>
+    </Setting>
+  </Settings>
+  <Files>
+    <File>Main.lua</File>
+  </Files>
+</Configuration>
