@@ -7,8 +7,11 @@ luanet.load_assembly("System.Net")
 require("Atlas-Addons-Lua-ParseJson.JsonParser")
 
 Ctx = {
+   Encoding = luanet.import_type("System.Text.Encoding"),
    DataTable = luanet.import_type("System.Data.DataTable"),
-   InterfaceManager = GetInterfaceManager(),
+   WebClient = luanet.import_type("System.Net.WebClient"),
+   NameValueCollection = luanet.import_type("System.Collections.Specialized.NameValueCollection"),
+   InterfaceManager = GetInterfaceManager()
 }
 
 
