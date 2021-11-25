@@ -1,33 +1,12 @@
--- FIXME: ditch serialize
--- FIXME: reuse session id?
-
-require "hmserialize"
-
-function LoadSampleData()
-   local fh = io.open(Ctx.PluginBaseDir .. "sample.json", "r")
-   if fh == nil then
-      return nil
-   end
-
-   local s = fh:read("*all")
-   io.close(fh)
-
-   return JsonParser:ParseJSON(s)
-end
-
--- FIXME: config
-BaseUrl = "http://dishevelled.net:4567/"
-
 function GetSession(webclient, username, password)
    local params = Ctx.NameValueCollection()
    params:Add("password", password)
-   params:Add("expiring", "false")
 
    local success, result = pcall(webclient.UploadValues,
-				 webclient,
-				 BaseUrl .. "users/" .. username .. "/login",
-				 "POST",
-				 params)
+                                 webclient,
+                                 Ctx.BaseUrl .. "users/" .. username .. "/login",
+                                 "POST",
+                                 params)
 
    if (success) then
       local response = JsonParser:ParseJSON(Ctx.Encoding.UTF8:GetString(result))
@@ -36,14 +15,24 @@ function GetSession(webclient, username, password)
    else
       Ctx.InterfaceManager:ShowMessage("Connection to ArchivesSpace failed.", "Network Error")
    end
+end
 
+function Logout(webclient, sessionId)
+   webclient.QueryString = Ctx.NameValueCollection()
+   webclient.Headers:Add("X-ArchivesSpace-Session", sessionId)
+
+   pcall(webclient.UploadValues,
+         webclient,
+         Ctx.BaseUrl .. "users/logout",
+         "POST",
+         Ctx.NameValueCollection())
 end
 
 function PerformSearch(query)
    LogInfo("PerformSearch")
 
    local webclient = Ctx.WebClient()
-   local sessionId = GetSession(webclient, "admin", "admin")
+   local sessionId = GetSession(webclient, Ctx.Username, Ctx.Password)
 
    webclient.Headers:Add("X-ArchivesSpace-Session", sessionId)
 
@@ -51,8 +40,10 @@ function PerformSearch(query)
    webclient.QueryString:Add("q", query)
 
    local success, result = pcall(webclient.DownloadString,
-				 webclient,
-				 BaseUrl .. "plugins/yale_as_requests/search")
+                                 webclient,
+                                 Ctx.BaseUrl .. "plugins/yale_as_requests/search")
+
+   pcall(Logout, webclient, sessionId)
 
    if (success) then
       local response = JsonParser:ParseJSON(result)
@@ -102,10 +93,10 @@ function ConfigureForm()
 
    function HandleSearchInput(sender, args)
       if tostring(args.KeyCode) == "Return: 13" then
-	 ShowMessageInGrid(grid, "Searching...")
+         ShowMessageInGrid(grid, "Searching...")
 
-	 local results = PerformSearch(searchInput.Value)
-	 ShowSearchResults(form, results, grid)
+         local results = PerformSearch(searchInput.Value)
+         ShowSearchResults(form, results, grid)
       end
    end
 
@@ -113,13 +104,13 @@ function ConfigureForm()
       local selection = grid.GridControl.MainView:GetFocusedRow()
 
       if selection == nil then
-	 Ctx.InterfaceManager:ShowMessage("No record selected", "Import Failed")
-	 return
+         Ctx.InterfaceManager:ShowMessage("No record selected", "Import Failed")
+         return
       end
 
       -- Clear any previous fields
       for k in pairs(seenFields) do
-	 local success, _ = pcall(SetFieldValue, "Transaction", k, "")
+         local success, _ = pcall(SetFieldValue, "Transaction", k, "")
       end
 
       seenFields = {}
@@ -127,20 +118,20 @@ function ConfigureForm()
       local success, requestJson = pcall(selection.get_Item, selection, "request_json")
 
       if not success then
-	 Ctx.InterfaceManager:ShowMessage("No record selected", "Import Failed")
-	 return
-      end      
+         Ctx.InterfaceManager:ShowMessage("No record selected", "Import Failed")
+         return
+      end
 
       local mapped = JsonParser:ParseJSON(requestJson)
       for k in pairs(mapped) do
-	 local v = tostring(mapped[k]):sub(0, 255)
-	 local success, _ = pcall(SetFieldValue, "Transaction", k, v)
+         local v = tostring(mapped[k]):sub(0, 255)
+         local success, _ = pcall(SetFieldValue, "Transaction", k, v)
 
-	 if success then
-	    seenFields[k] = true
-	 else
-	    LogDebug("Field not present in Transaction form: " .. k)
-	 end
+         if success then
+            seenFields[k] = true
+         else
+            LogDebug("Field not present in Transaction form: " .. k)
+         end
       end
 
       ExecuteCommand("SwitchTab", {"Detail"})
@@ -185,10 +176,10 @@ function ShowSearchResults(form, results, grid)
       local row = tableData:NewRow();
 
       for field in pairs(request) do
-	 local success, _ = pcall(row.set_Item, row, field, request[field])
-	 if not success then
-	    LogDebug("Failed to set field: " .. field)
-	 end
+         local success, _ = pcall(row.set_Item, row, field, request[field])
+         if not success then
+            LogDebug("Failed to set field: " .. field)
+         end
       end
 
       tableData.Rows:Add(row)

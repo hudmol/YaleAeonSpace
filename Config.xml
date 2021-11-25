@@ -11,14 +11,14 @@
   </Forms>
   <Permissions />
   <Settings>
-    <Setting name="APIUrl" value="http://localhost/" type="string">
-      <Description>The base URL for the custom AS echo webservice</Description>
+    <Setting name="ArchivesSpaceAPIURL" value="https://localhost/" type="string">
+      <Description>ArchivesSpace API URL</Description>
     </Setting>
-    <Setting name="APIUsername" value="admin" type="string">
-      <Description>The username used to access the AS api</Description>
+    <Setting name="ArchivesSpaceUser" value="admin" type="string">
+      <Description>ArchivesSpace username</Description>
     </Setting>
-    <Setting name="APIPassword" value="admin" type="string">
-      <Description>The password used to access the AS api</Description>
+    <Setting name="ArchivesSpacePassword" value="admin" type="string">
+      <Description>ArchivesSpace password</Description>
     </Setting>
   </Settings>
   <Files>

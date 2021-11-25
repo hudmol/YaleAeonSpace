@@ -11,7 +11,10 @@ Ctx = {
    DataTable = luanet.import_type("System.Data.DataTable"),
    WebClient = luanet.import_type("System.Net.WebClient"),
    NameValueCollection = luanet.import_type("System.Collections.Specialized.NameValueCollection"),
-   InterfaceManager = GetInterfaceManager()
+   InterfaceManager = GetInterfaceManager(),
+   BaseUrl = GetSetting("ArchivesSpaceAPIURL"),
+   Username = GetSetting("ArchivesSpaceUser"),
+   Password = GetSetting("ArchivesSpacePassword")
 }
 
 
