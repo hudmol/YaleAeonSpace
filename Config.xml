@@ -7,7 +7,6 @@
   <Type>Addon</Type>
   <Description>Place requests for ArchivesSpace records</Description>
   <Forms>
-    <Form>FormSplash</Form>
     <Form>FormRequest</Form>
   </Forms>
   <Permissions />

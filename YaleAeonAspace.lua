@@ -89,13 +89,16 @@ function ShowMessageInGrid(grid, message)
    grid.GridControl:Refresh()
 end
 
+
 function ConfigureForm()
    local form = Ctx.InterfaceManager:CreateForm("ArchivesSpace", "ArchivesSpace")
 
-   form:CreateRibbonPage("ArchivesSpace")
+   local ribbon = form:CreateRibbonPage("ArchivesSpace")
 
    local searchInput = form:CreateTextEdit("ArchivesSpaceSearch", "Search ArchivesSpace")
    local grid = form:CreateGrid("ArchivesSpaceGrid", "ArchivesSpace Results")
+
+   local seenFields = {}
 
    function HandleSearchInput(sender, args)
       if tostring(args.KeyCode) == "Return: 13" then
@@ -106,7 +109,46 @@ function ConfigureForm()
       end
    end
 
+   function HandleImport()
+      local selection = grid.GridControl.MainView:GetFocusedRow()
+
+      if selection == nil then
+	 Ctx.InterfaceManager:ShowMessage("No record selected", "Import Failed")
+	 return
+      end
+
+      -- Clear any previous fields
+      for k in pairs(seenFields) do
+	 local success, _ = pcall(SetFieldValue, "Transaction", k, "")
+      end
+
+      seenFields = {}
+
+      local success, requestJson = pcall(selection.get_Item, selection, "request_json")
+
+      if not success then
+	 Ctx.InterfaceManager:ShowMessage("No record selected", "Import Failed")
+	 return
+      end      
+
+      local mapped = JsonParser:ParseJSON(requestJson)
+      for k in pairs(mapped) do
+	 local v = tostring(mapped[k]):sub(0, 255)
+	 local success, _ = pcall(SetFieldValue, "Transaction", k, v)
+
+	 if success then
+	    seenFields[k] = true
+	 else
+	    LogDebug("Field not present in Transaction form: " .. k)
+	 end
+      end
+
+      ExecuteCommand("SwitchTab", {"Detail"})
+   end
+
    searchInput.Editor.KeyDown:Add(HandleSearchInput)
+
+   ribbon:CreateButton("Import Selected", GetClientImage("impt_32x32"), "HandleImport", "")
 
    form:Show()
 end
