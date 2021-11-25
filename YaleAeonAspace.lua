@@ -2,6 +2,10 @@ function GetSession(webclient, username, password)
    local params = Ctx.NameValueCollection()
    params:Add("password", password)
 
+   LogInfo(Ctx.BaseUrl)
+   LogInfo(Ctx.BaseUrl .. "users/" .. username .. "/login")
+
+
    local success, result = pcall(webclient.UploadValues,
                                  webclient,
                                  Ctx.BaseUrl .. "users/" .. username .. "/login",
@@ -14,6 +18,7 @@ function GetSession(webclient, username, password)
       return response["session"]
    else
       Ctx.InterfaceManager:ShowMessage("Connection to ArchivesSpace failed.", "Network Error")
+      error("Connection failure")
    end
 end
 
@@ -50,6 +55,7 @@ function PerformSearch(query)
       return response
    else
       Ctx.InterfaceManager:ShowMessage("Connection to ArchivesSpace failed.", "Network Error")
+      error("Connection failure")
    end
 end
 

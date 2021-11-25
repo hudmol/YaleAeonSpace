@@ -17,6 +17,8 @@ Ctx = {
    Password = GetSetting("ArchivesSpacePassword")
 }
 
+-- Base URL requires a trailing slash
+Ctx.BaseUrl = string.gsub(Ctx.BaseUrl .. "/", "/+$", "/")
 
 
 function fileExists(path)
