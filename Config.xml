@@ -11,6 +11,12 @@
   </Forms>
   <Permissions />
   <Settings>
+    <Setting name="TabName" value="ArchivesSpace Import" type="string">
+      <Description>Defines what text you want to appear on the addon ribbon. Does not affect logging or internal naming.</Description>
+    </Setting>
+    <Setting name="LogLabel" value="AeonSpace | " type="string">
+        <Description>Logging prefix to aid in log reading</Description>
+    </Setting>
     <Setting name="ArchivesSpaceAPIURL" value="https://localhost/" type="string">
       <Description>ArchivesSpace API URL</Description>
     </Setting>
