@@ -71,11 +71,13 @@ function PerformSearch(query)
 
    local webclient = Ctx.WebClient()
    local sessionId = GetSession(webclient, Ctx.Username, Ctx.Password)
+   LogDebug("ASpace sessionId = " .. sessionId)
 
    webclient.Headers:Add("X-ArchivesSpace-Session", sessionId)
 
    webclient.QueryString = Ctx.NameValueCollection()
    webclient.QueryString:Add("q", query)
+   LogDebug("ASpace query = " .. query)
 
    local success, result = pcall(webclient.DownloadString,
                                  webclient,
@@ -87,7 +89,8 @@ function PerformSearch(query)
       local response = JsonParser:ParseJSON(result)
       return response
    else
-      Ctx.InterfaceManager:ShowMessage("Connection to ArchivesSpace failed.", "Network Error")
+      LogDebug("API call error") 
+      Ctx.InterfaceManager:ShowMessage("ArchivesSpace search failed", "Network Error")
       error("Connection failure")
    end
 end
