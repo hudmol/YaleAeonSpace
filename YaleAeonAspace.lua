@@ -14,27 +14,15 @@ function GetAuthenticationToken(username, password)
 end
 
 function GetSession(webclient, username, password)
-   local params = Ctx.NameValueCollection()
-   params:Add("password", password)
+    local authentication = GetAuthenticationToken(username, password);
+    local sessionId = ExtractProperty(authentication, "session");
 
-   LogInfo(Ctx.BaseUrl)
-   LogInfo(Ctx.BaseUrl .. "users/" .. username .. "/login")
+    if (sessionId == nil or sessionId == JsonParser.NIL or sessionId == '') then
+        ReportError("Unable to get valid session ID token.");
+        return;
+    end
 
-
-   local success, result = pcall(webclient.UploadValues,
-                                 webclient,
-                                 Ctx.BaseUrl .. "users/" .. username .. "/login",
-                                 "POST",
-                                 params)
-
-   if (success) then
-      local response = JsonParser:ParseJSON(Ctx.Encoding.UTF8:GetString(result))
-
-      return response["session"]
-   else
-      Ctx.InterfaceManager:ShowMessage("Connection to ArchivesSpace failed.", "Network Error")
-      error("Connection failure")
-   end
+    return sessionId;
 end
 
 function SendApiRequest(apiPath, method, parameters, authToken)
