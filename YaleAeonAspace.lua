@@ -101,7 +101,7 @@ function ShowMessageInGrid(grid, message)
    msg.Caption = "Message"
    msg.FieldName = "Message"
    msg.Name = "Message"
-   msg.width = 10240
+   msg.Width = 10240
    msg.Visible = true
    msg.VisibleIndex = 0
    msg.OptionsColumn.ReadOnly = true
