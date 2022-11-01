@@ -121,7 +121,7 @@ end
 
 
 function ConfigureForm()
-   local form = Ctx.InterfaceManager:CreateForm("ArchivesSpace", "ArchivesSpace")
+   local form = Ctx.InterfaceManager:CreateForm(Ctx.TabName, "ArchivesSpace")
 
    local ribbon = form:CreateRibbonPage("ArchivesSpace")
 

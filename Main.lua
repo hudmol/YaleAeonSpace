@@ -14,7 +14,8 @@ Ctx = {
    InterfaceManager = GetInterfaceManager(),
    BaseUrl = GetSetting("ArchivesSpaceAPIURL"),
    Username = GetSetting("ArchivesSpaceUser"),
-   Password = GetSetting("ArchivesSpacePassword")
+   Password = GetSetting("ArchivesSpacePassword"),
+   TabName = GetSetting("TabName")
 }
 
 -- Base URL requires a trailing slash
