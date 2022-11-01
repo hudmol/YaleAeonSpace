@@ -124,9 +124,9 @@ end
 
 
 function ConfigureForm()
-   local form = Ctx.InterfaceManager:CreateForm(Ctx.TabName, "ArchivesSpace")
+   local form = Ctx.InterfaceManager:CreateForm(Ctx.TabName, "ArchivesSpace Search")
 
-   local ribbon = form:CreateRibbonPage("ArchivesSpace")
+   local ribbon = form:CreateRibbonPage("ArchivesSpace Search")
 
    local searchInput = form:CreateTextEdit("ArchivesSpaceSearch", "Search ArchivesSpace")
    local grid = form:CreateGrid("ArchivesSpaceGrid", "ArchivesSpace Results")
