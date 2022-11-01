@@ -197,3 +197,115 @@ function ShowSearchResults(form, results, grid)
       grid.GridControl.DataSource = tableData
    end
 end
+
+--[[
+ERROR HANDLING HELPERS
+]]--
+-- Internal intentional improved error handler
+function ReportError(message)
+    if (message == nil) then
+        message = "Unspecific error";
+    end
+
+    LogDebug("An error occurred: " .. message);
+    interfaceMngr:ShowMessage("An error occurred:\r\n" .. message, "HM ArchivesSpace Addon");
+end;
+
+-- Primary Lua error handler
+function OnError(e)
+    LogDebug("[OnError]");
+    if e == nil then
+        LogDebug("OnError supplied a nil error");
+        return;
+    end
+
+    if not e.GetType then
+        -- Not a .NET type
+        -- Attempt to log value
+        pcall(function ()
+            LogDebug(e);
+        end);
+        return;
+    else
+        if not e.Message then
+            LogDebug(e:ToString());
+            return;
+        end
+    end
+
+    local message = TraverseError(e);
+
+    if message == nil then
+        message = "Unspecified Error";
+    end
+
+    ReportError(message);
+end
+
+-- Recursively logs exception messages and returns the innermost message to caller
+function TraverseError(e)
+    if not e.GetType then
+        -- Not a .NET type
+        return nil;
+    else
+        if not e.Message then
+            -- Not a .NET exception
+            LogDebug(e:ToString());
+            return nil;
+        end
+    end
+
+    LogDebug(e.Message);
+
+    if e.InnerException then
+        return TraverseError(e.InnerException);
+    else
+        return e.Message;
+    end
+end
+
+--[[
+GENERAL HELPERS
+]]--
+-- Makes a string appropriate for use in a URL
+function UrlEncode(str)
+	if (str) then
+		str = string.gsub (str, "\n", "\r\n");
+
+		str = string.gsub (str, "([^%w ])",
+			function (c) return string.format ("%%%02X", string.byte(c)) end);
+
+		str = string.gsub (str, " ", "+");
+	end
+
+	return str;
+end
+
+-- Safely gets a property from an object
+function ExtractProperty(object, property)
+    if object then
+        return EmptyStringIfNil(object[property]);
+    end
+end
+
+-- Ensures use of empty string rather than `nil` when you want
+function EmptyStringIfNil(value)
+    if (value == nil or value == JsonParser.NIL) then
+        return "";
+    else
+        return value;
+    end
+end
+
+-- Combines two parts of a path, ensuring they're separated by a / character
+function PathCombine(path1, path2)
+    local trailingSlashPattern = '/$';
+    local leadingSlashPattern = '^/';
+
+    if(path1 and path2) then
+        local result = path1:gsub(trailingSlashPattern, '') .. '/' .. path2:gsub(leadingSlashPattern, '');
+        return result;
+    else
+        return "";
+    end
+end
