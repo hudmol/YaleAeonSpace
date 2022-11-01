@@ -1,3 +1,18 @@
+function GetAuthenticationToken(username, password)
+    LogDebug("Username = " .. username);
+    local apiPath = 'users/' .. username .. '/login'
+    LogInfo('apiPath = ' .. apiPath);
+
+    local authenticationToken = JsonParser:ParseJSON(SendApiRequest(apiPath, 'POST', "password=".. UrlEncode(password)));
+
+    if (authenticationToken == nil or authenticationToken == JsonParser.NIL or authenticationToken == '') then
+        ReportError("Unable to get valid authentication token.");
+        return;
+    end
+
+    return authenticationToken
+end
+
 function GetSession(webclient, username, password)
    local params = Ctx.NameValueCollection()
    params:Add("password", password)
@@ -20,6 +35,36 @@ function GetSession(webclient, username, password)
       Ctx.InterfaceManager:ShowMessage("Connection to ArchivesSpace failed.", "Network Error")
       error("Connection failure")
    end
+end
+
+function SendApiRequest(apiPath, method, parameters, authToken)
+    LogDebug('[SendApiRequest] ' .. method);
+    LogDebug('apiPath: ' .. apiPath);
+
+    local webClient = Ctx.WebClient()
+
+    webClient.Headers:Clear();
+    if (authToken ~= nil and authToken ~= "") then
+        webClient.Headers:Add("X-ArchivesSpace-Session", authToken);
+    end
+
+    local success, result;
+
+    success, result = pcall(WebClientPost, webClient, apiPath, method, parameters);
+
+    if (success) then
+        LogDebug("API call successful");
+        LogDebug("Response: " .. result);
+        return result;
+    else
+        LogDebug("API call error");
+        OnError(result);
+        return "";
+    end
+end
+
+function WebClientPost(webClient, apiPath, method, postParameters)
+    return webClient:UploadString(PathCombine(Ctx.BaseUrl, apiPath), method, postParameters);
 end
 
 function Logout(webclient, sessionId)
