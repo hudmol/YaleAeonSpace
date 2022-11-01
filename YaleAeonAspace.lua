@@ -1,5 +1,5 @@
 function GetAuthenticationToken(username, password)
-    LogDebug("Username = " .. username);
+    Log("Username = " .. username);
     local apiPath = 'users/' .. username .. '/login'
     LogInfo('apiPath = ' .. apiPath);
 
@@ -26,8 +26,8 @@ function GetSession(webclient, username, password)
 end
 
 function SendApiRequest(apiPath, method, parameters, authToken)
-    LogDebug('[SendApiRequest] ' .. method);
-    LogDebug('apiPath: ' .. apiPath);
+    Log('[SendApiRequest] ' .. method);
+    Log('apiPath: ' .. apiPath);
 
     local webClient = Ctx.WebClient()
 
@@ -41,11 +41,11 @@ function SendApiRequest(apiPath, method, parameters, authToken)
     success, result = pcall(WebClientPost, webClient, apiPath, method, parameters);
 
     if (success) then
-        LogDebug("API call successful");
-        LogDebug("Response: " .. result);
+        Log("API call successful");
+        Log("Response: " .. result);
         return result;
     else
-        LogDebug("API call error");
+        Log("API call error");
         OnError(result);
         return "";
     end
@@ -71,13 +71,13 @@ function PerformSearch(query)
 
    local webclient = Ctx.WebClient()
    local sessionId = GetSession(webclient, Ctx.Username, Ctx.Password)
-   LogDebug("ASpace sessionId = " .. sessionId)
+   Log("ASpace sessionId = " .. sessionId)
 
    webclient.Headers:Add("X-ArchivesSpace-Session", sessionId)
 
    webclient.QueryString = Ctx.NameValueCollection()
    webclient.QueryString:Add("q", query)
-   LogDebug("ASpace query = " .. query)
+   Log("ASpace query = " .. query)
 
    local success, result = pcall(webclient.DownloadString,
                                  webclient,
@@ -89,7 +89,7 @@ function PerformSearch(query)
       local response = JsonParser:ParseJSON(result)
       return response
    else
-      LogDebug("API call error") 
+      Log("API call error") 
       Ctx.InterfaceManager:ShowMessage("ArchivesSpace search failed", "Network Error")
       error("Connection failure")
    end
@@ -172,7 +172,7 @@ function ConfigureForm()
          if success then
             seenFields[k] = true
          else
-            LogDebug("Field not present in Transaction form: " .. k)
+            Log("Field not present in Transaction form: " .. k)
          end
       end
 
@@ -220,7 +220,7 @@ function ShowSearchResults(form, results, grid)
       for field in pairs(request) do
          local success, _ = pcall(row.set_Item, row, field, request[field])
          if not success then
-            LogDebug("Failed to set field: " .. field)
+            Log("Failed to set field: " .. field)
          end
       end
 
@@ -243,15 +243,15 @@ function ReportError(message)
         message = "Unspecific error";
     end
 
-    LogDebug("An error occurred: " .. message);
+    Log("An error occurred: " .. message);
     interfaceMngr:ShowMessage("An error occurred:\r\n" .. message, "HM ArchivesSpace Addon");
 end;
 
 -- Primary Lua error handler
 function OnError(e)
-    LogDebug("[OnError]");
+    Log("[OnError]");
     if e == nil then
-        LogDebug("OnError supplied a nil error");
+        Log("OnError supplied a nil error");
         return;
     end
 
@@ -259,12 +259,12 @@ function OnError(e)
         -- Not a .NET type
         -- Attempt to log value
         pcall(function ()
-            LogDebug(e);
+            Log(e);
         end);
         return;
     else
         if not e.Message then
-            LogDebug(e:ToString());
+            Log(e:ToString());
             return;
         end
     end
@@ -286,12 +286,12 @@ function TraverseError(e)
     else
         if not e.Message then
             -- Not a .NET exception
-            LogDebug(e:ToString());
+            Log(e:ToString());
             return nil;
         end
     end
 
-    LogDebug(e.Message);
+    Log(e.Message);
 
     if e.InnerException then
         return TraverseError(e.InnerException);
