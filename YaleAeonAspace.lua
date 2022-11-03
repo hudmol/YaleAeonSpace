@@ -245,7 +245,7 @@ function ReportError(message)
     end
 
     Log("An error occurred: " .. message);
-    interfaceMngr:ShowMessage("An error occurred:\r\n" .. message, "HM ArchivesSpace Addon");
+    Ctx.InterfaceManager:ShowMessage("An error occurred:\r\n" .. message, "HM ArchivesSpace Addon");
 end;
 
 -- Primary Lua error handler
