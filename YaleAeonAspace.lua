@@ -67,7 +67,7 @@ function Logout(webclient, sessionId)
 end
 
 function PerformSearch(query)
-   LogInfo("PerformSearch")
+   Log("PerformSearch", LOG_INFO)
 
    local webclient = Ctx.WebClient()
    local sessionId = GetSession(webclient, Ctx.Username, Ctx.Password)
