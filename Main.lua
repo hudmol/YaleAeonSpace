@@ -5,7 +5,6 @@ luanet.load_assembly("System.Data")
 luanet.load_assembly("System.Net")
 
 require("Atlas-Addons-Lua-ParseJson.JsonParser")
-require("Logging");
 
 Ctx = {
    Encoding = luanet.import_type("System.Text.Encoding"),
@@ -16,12 +15,14 @@ Ctx = {
    BaseUrl = GetSetting("ArchivesSpaceAPIURL"),
    Username = GetSetting("ArchivesSpaceUser"),
    Password = GetSetting("ArchivesSpacePassword"),
-   TabName = GetSetting("TabName")
+   TabName = GetSetting("TabName"),
+   LogLabel = GetSetting("LogLabel")
 }
+
+require("Logging");
 
 -- Base URL requires a trailing slash
 Ctx.BaseUrl = string.gsub(Ctx.BaseUrl .. "/", "/+$", "/")
-
 
 function fileExists(path)
    local fh = io.open(path, "r")
