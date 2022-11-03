@@ -59,9 +59,11 @@ function Logout(webclient, sessionId)
    webclient.QueryString = Ctx.NameValueCollection()
    webclient.Headers:Add("X-ArchivesSpace-Session", sessionId)
 
+   local logoutPath = PathCombine(Ctx.BaseUrl, "users/logout")
+
    pcall(webclient.UploadValues,
          webclient,
-         Ctx.BaseUrl .. "users/logout",
+         logoutPath,
          "POST",
          Ctx.NameValueCollection())
 end
@@ -79,9 +81,10 @@ function PerformSearch(query)
    webclient.QueryString:Add("q", query)
    Log("ASpace query = " .. query)
 
+   local hmPluginPath = PathCombine(Ctx.BaseUrl, "plugins/yale_as_requests/search")
    local success, result = pcall(webclient.DownloadString,
                                  webclient,
-                                 Ctx.BaseUrl .. "plugins/yale_as_requests/search")
+                                 hmPluginPath)
 
    pcall(Logout, webclient, sessionId)
 
