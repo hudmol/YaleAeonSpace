@@ -1,7 +1,7 @@
 function GetAuthenticationToken(username, password)
     Log("Username = " .. username);
     local apiPath = 'users/' .. username .. '/login'
-    LogInfo('apiPath = ' .. apiPath);
+    Log('apiPath = ' .. apiPath, LOG_INFO);
 
     local authenticationToken = JsonParser:ParseJSON(SendApiRequest(apiPath, 'POST', "password=".. UrlEncode(password)));
 
@@ -89,7 +89,8 @@ function PerformSearch(query)
       local response = JsonParser:ParseJSON(result)
       return response
    else
-      Log("API call error") 
+      Log("API call error")
+      OnError(result)
       Ctx.InterfaceManager:ShowMessage("ArchivesSpace search failed", "Network Error")
       error("Connection failure")
    end
