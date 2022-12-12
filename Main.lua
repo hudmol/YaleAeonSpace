@@ -5,6 +5,7 @@ luanet.load_assembly("System.Data")
 luanet.load_assembly("System.Net")
 
 require("Atlas-Addons-Lua-ParseJson.JsonParser")
+require("Base64Encode")
 
 Ctx = {
    Encoding = luanet.import_type("System.Text.Encoding"),
