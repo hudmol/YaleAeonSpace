@@ -20,6 +20,7 @@ Ctx = {
    LogLabel = GetSetting("LogLabel")
 }
 
+-- Needs to come after settings are imported, as it uses settings values
 require("Logging");
 
 -- Base URL requires a trailing slash
