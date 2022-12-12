@@ -17,14 +17,14 @@
     <Setting name="LogLabel" value="AeonSpace | " type="string">
         <Description>Logging prefix to aid in log reading</Description>
     </Setting>
-    <Setting name="ArchivesSpaceAPIURL" value="https://localhost/" type="string">
+    <Setting name="ArchivesSpaceAPIURL" value="https://testarchivesspace.library.yale.edu/api" type="string">
       <Description>ArchivesSpace API URL</Description>
     </Setting>
-    <Setting name="ArchivesSpaceUser" value="admin" type="string">
-      <Description>ArchivesSpace username</Description>
+    <Setting name="ArchivesSpaceUser" value="" type="string">
+      <Description>ArchivesSpace account with wide but read-only access to records</Description>
     </Setting>
-    <Setting name="ArchivesSpacePassword" value="admin" type="string">
-      <Description>ArchivesSpace password</Description>
+    <Setting name="ArchivesSpacePassword" value="" type="string">
+      <Description>ArchivesSpace password for read-only account</Description>
     </Setting>
   </Settings>
   <Files>
