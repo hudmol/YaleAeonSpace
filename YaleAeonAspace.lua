@@ -72,7 +72,7 @@ function PerformSearch(query)
    Log("PerformSearch", LOG_INFO)
 
    local webclient = Ctx.WebClient()
-   local sessionId = GetSession(webclient, Ctx.Username, Ctx.Password)
+   local sessionId = GetSession(webclient, Ctx.Username, DecodeBase64(Ctx.Password))
    Log("ASpace sessionId = " .. sessionId)
 
    webclient.Headers:Add("X-ArchivesSpace-Session", sessionId)
