@@ -36,7 +36,6 @@ function fileExists(path)
    end
 end
 
-
 function findInPath(name)
    local haystack = package.path .. ";"
 
@@ -61,7 +60,6 @@ function findInPath(name)
 
    return nil
 end
-
 
 function Init()
    local mainProgram = findInPath("YaleAeonAspace")
