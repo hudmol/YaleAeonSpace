@@ -94,8 +94,6 @@ function PerformSearch(query)
    else
       Log("API call error")
       OnError(result)
-      Ctx.InterfaceManager:ShowMessage("ArchivesSpace search failed", "Network Error")
-      error("Connection failure")
    end
 end
 
@@ -248,12 +246,12 @@ function ReportError(message)
     end
 
     Log("An error occurred: " .. message);
-    Ctx.InterfaceManager:ShowMessage("An error occurred:\r\n" .. message, "HM ArchivesSpace Addon");
+    Ctx.InterfaceManager:ShowMessage("An error occurred:\r\n" .. message, Ctx.TabName);
 end;
 
 -- Primary Lua error handler
 function OnError(e)
-    Log("[OnError]");
+    Log("[OnError]", LOG_DEBUG);
     if e == nil then
         Log("OnError supplied a nil error");
         return;
@@ -263,7 +261,7 @@ function OnError(e)
         -- Not a .NET type
         -- Attempt to log value
         pcall(function ()
-            Log(e);
+            Log("Just the e: " .. e);
         end);
         return;
     else
@@ -277,6 +275,10 @@ function OnError(e)
 
     if message == nil then
         message = "Unspecified Error";
+    end
+
+    if message == "The operation has timed out" then
+        message = "The search time exceeded the allowed amount.\r\nThis most often happens when the search is too broad.\r\nPlease try again with a narrower search.";
     end
 
     ReportError(message);
