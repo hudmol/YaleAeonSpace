@@ -7,6 +7,10 @@ luanet.load_assembly("System.Net")
 require("Atlas-Addons-Lua-ParseJson.JsonParser")
 require("Base64Encode")
 
+-- This is the Atlas way of importing types, saved as a reference in case the HM way below seems to stop working
+--Types = {};
+--Types["System.Text.Encoding"] = luanet.import_type("System.Text.Encoding");
+
 Ctx = {
    Encoding = luanet.import_type("System.Text.Encoding"),
    DataTable = luanet.import_type("System.Data.DataTable"),
