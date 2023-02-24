@@ -72,6 +72,10 @@ function PerformSearch(query)
    Log("PerformSearch", LOG_INFO)
 
    local webclient = Ctx.WebClient()
+-- This is the Atlas way of setting encoding from a type, saved as a reference in case the HM way below seems to stop working
+--   webclient.Encoding = Types["System.Text.Encoding"].UTF8;
+   webclient.Encoding = Ctx.Encoding.UTF8;
+
    local sessionId = GetSession(webclient, Ctx.Username, DecodeBase64(Ctx.Password))
    Log("ASpace sessionId = " .. sessionId)
 
