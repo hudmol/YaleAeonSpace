@@ -15,7 +15,8 @@ The search logic is as follows (`q` is the incoming query string):
 ## Call Number search
 
 From `q` we now have a matching resource. A Call Number search will return any containers associated with this resource or its children and include any BornDigital items in the hierarchy.
-Normal search
+
+## Normal search
 
 Find containers where:
 
