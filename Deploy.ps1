@@ -42,7 +42,7 @@ try
     {
         Write-Host "path exists"
         Write-Host "Removing " $destinationPath
-        Remove-Item $destinationPath\*.* -Force
+        Remove-Item $destinationPath\* -Recurse -Force
     }
     else
     {
