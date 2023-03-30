@@ -33,8 +33,9 @@ try
         Write-Host "Version number in Config.xml: " $versionNode.InnerText
         $newVersion = $versionNode.InnerText, $buildVersion -join "."
         $versionNode.InnerText = $newVersion
-        Write-Host "Saving to " $fileName
-        $configXml.Save($fileName)
+        $thePath = Convert-Path $fileName
+        Write-Host "Saving to " $thePath
+        $configXml.Save($thePath)
     }
 
     if (Test-Path $destinationPath)
