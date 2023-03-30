@@ -51,7 +51,7 @@ try
     }
 
     updateXml -fileName $deployConfigFile -buildVersion $buildNumber
-    Copy-Item -Path $addonCodePath\* -Destination $destinationPath -Recurse -Exclude *.ps1 -ErrorAction Stop
+    Copy-Item -Path $addonCodePath\* -Destination $destinationPath -Recurse -Exclude *.ps1, .git*, README.md -ErrorAction Stop
 
     Write-Host "copy complete"
     Exit 0
