@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>AeonSpace</Name>
+  <Author>Hudson Molonglo</Author>
+  <Version>1.0.0</Version>
+  <Active>True</Active>
+  <Type>Addon</Type>
+  <Description>Place requests for ArchivesSpace records</Description>
+  <Forms>
+    <Form>FormRequest</Form>
+  </Forms>
+  <Permissions />
+  <Settings>
+    <Setting name="TabName" value="ArchivesSpace Import" type="string">
+      <Description>Defines what text you want to appear on the addon ribbon. Does not affect logging or internal naming.</Description>
+    </Setting>
+    <Setting name="LogLabel" value="AeonSpace | " type="string">
+        <Description>Logging prefix to aid in log reading</Description>
+    </Setting>
+    <Setting name="ArchivesSpaceAPIURL" value="https://testarchivesspace.library.yale.edu/api" type="string">
+      <Description>ArchivesSpace API URL</Description>
+    </Setting>
+    <Setting name="ArchivesSpaceUser" value="s_lib_t_aeon_search" type="string">
+      <Description>ArchivesSpace account with wide but read-only access to records</Description>
+    </Setting>
+    <Setting name="ArchivesSpacePassword" value="c3RydWNrMi1jbGFua2luZy1tdXNocm9vbQ==" type="string">
+      <Description>ArchivesSpace password for read-only account</Description>
+    </Setting>
+  </Settings>
+  <Files>
+    <File>Main.lua</File>
+  </Files>
+</Configuration>
