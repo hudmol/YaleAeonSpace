@@ -50,9 +50,10 @@ try
         New-Item $destinationPath -ItemType Directory -Force
     }
 
-    updateXml -fileName $deployConfigFile -buildVersion $buildNumber
-    Copy-Item -Path $addonCodePath\* -Destination $destinationPath -Recurse -Exclude *.ps1, .git*, README.md -ErrorAction Stop
-
+	$localDestinationPath = Join-Path -Path $sourceDir -ChildPath Config.xml
+	Copy-Item -Path $deployConfigFile -Destination $localDestinationPath -ErrorAction Stop
+    updateXml -fileName $localDestinationPath -buildVersion $buildNumber
+    Copy-Item -Path $addonCodePath\* -Destination $destinationPath -Recurse -Exclude *.ps1, .git*, README.md, $deployConfigName -ErrorAction Stop
     Write-Host "copy complete"
     Exit 0
 }
