@@ -53,7 +53,7 @@ try
 	$localDestinationPath = Join-Path -Path $sourceDir -ChildPath Config.xml
 	Copy-Item -Path $deployConfigFile -Destination $localDestinationPath -ErrorAction Stop
     updateXml -fileName $localDestinationPath -buildVersion $buildNumber
-    Copy-Item -Path $addonCodePath\* -Destination $destinationPath -Recurse -Exclude *.ps1, .git*, README.md, $deployConfigName -ErrorAction Stop
+    Copy-Item -Path $addonCodePath\* -Destination $destinationPath -Recurse -Exclude *.ps1, .git*, README.md, $deployConfigName, Config.*.xml -ErrorAction Stop
     Write-Host "copy complete"
     Exit 0
 }
