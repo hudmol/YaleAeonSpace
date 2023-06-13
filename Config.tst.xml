@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Name>AeonSpace</Name>
+  <Name>Yale ArchivesSpace Search</Name>
   <Author>Hudson Molonglo</Author>
   <Version>1.0.0</Version>
   <Active>True</Active>
   <Type>Addon</Type>
-  <Description>Place requests for ArchivesSpace records</Description>
+  <Description>Search ArchivesSpace records for requesting</Description>
   <Forms>
     <Form>FormRequest</Form>
   </Forms>
